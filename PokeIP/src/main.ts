@@ -17,13 +17,13 @@ async function createPokemon(){
     const id:number = generateRandomId(152);
     const pokemon = new PokemonCard();
 
-    const getPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon-form/${id}`).then(data => data.json())
+    const getPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`).then(data => data.json())
+    console.log(getPokemon)
 
     pokemon.setId = i
-    pokemon.setName = getPokemon.pokemon.name
+    pokemon.setName = getPokemon.name
     pokemon.setSprite = getPokemon.sprites.front_default
     pokemon.setType = getPokemon.types
-    console.log(getPokemon.types)
 
     if(i<5){
       topCardsBox?.appendChild(pokemon)
@@ -33,16 +33,23 @@ async function createPokemon(){
   }
 }
 
-export function chooseCard( e :MouseEvent){
-  const element = e.target as HTMLElement
-  console.log(element)
+let isTopChoosen:boolean = false;
+let isBottomChoosen:boolean = false;
 
-  /*
-  if(Number(element.id) < 5){
-    topCardsBox?.removeChild(document.getElementById(element.id))
+export function chooseCard( e :MouseEvent){
+  const element = (e.target) as PokemonCard
+
+  if(!element) return
+
+  if(Number(element.getId) < 5){
+    if(!isTopChoosen){
+      isTopChoosen = true
+      middleBox?.appendChild(element as HTMLElement)
+    }
   }else{
-    bottomCardsBox?.removeChild(document.getElementById(element.id))  
+    if(!isBottomChoosen){
+      isBottomChoosen = true
+      middleBox?.appendChild(element as HTMLElement)
+    }
   }
-  */
-  
 }

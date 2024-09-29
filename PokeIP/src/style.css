@@ -17,20 +17,14 @@
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;  
   min-width: 320px;
   min-height: 100vh;
   background-image: var(--background-image-url);
   background-size: cover;
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-}
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
 @media (prefers-color-scheme: light) {
@@ -49,11 +43,12 @@ body {
 .flex-row{
   display: flex;
   flex-direction: row;
-  gap:1em;
+  gap: 1em;
   align-items: center;
   justify-content: center;
 }
 
 #middleBox{
-  height:200px;
+  height:20%;
+  width: 100%;
 }

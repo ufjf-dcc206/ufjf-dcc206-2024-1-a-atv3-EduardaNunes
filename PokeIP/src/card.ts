@@ -1,10 +1,15 @@
 import { chooseCard } from "./main.ts"
+
+interface Type {
+    type: { name: string };
+  }
+
 export default class PokemonCard extends HTMLElement{
     private shadow
     private pokeId:number = 0
     private name:string = ""
     private sprite:string = ""
-    private types: undefined[] = []
+    private types: Type[] = []
     constructor(){
         super()
         this.pokeId
@@ -12,6 +17,7 @@ export default class PokemonCard extends HTMLElement{
         this.sprite
         this.types
         this.shadow = this.attachShadow({mode:"closed"})
+        this.addEventListener("click", (e) => {chooseCard(e)})
         this.#render()
     }
     set setId(newId:number){
@@ -26,7 +32,7 @@ export default class PokemonCard extends HTMLElement{
         this.sprite = newSprite
         this.#render()
     }
-    set setType(newType:undefined[]){
+    set setType(newType:Type[]){
         newType.forEach(type => {
             this.types.push(type)  
         });
@@ -42,7 +48,7 @@ export default class PokemonCard extends HTMLElement{
     get getSprite():string{
         return this.sprite
     }
-    get getType():undefined[]{
+    get getType():Type[]{
         return this.types
     }
 
@@ -53,7 +59,7 @@ export default class PokemonCard extends HTMLElement{
                 display: flex;
                 flex-direction: column;
                 width: 180px;
-                height: 200px;
+                height: 15hv;
                 border-radius: 20px;
                 background: rgba(0, 0, 0, 0.6);
                 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -65,16 +71,19 @@ export default class PokemonCard extends HTMLElement{
                 box-sizing: border-box;
             }
             img{
+                pointer-events: none;
                 position: absolute;
-                width: 110%;
+                width: 100%;
                 image-rendering: pixelated;
                 top: -80px;
             }
             h2{
+                pointer-events: none;
                 height: 20%;
                 position: relative;
             }
             .typesBox{
+                pointer-events: none;
                 height: 30%;
                 display: flex;
                 flex-direction: row;
@@ -145,7 +154,6 @@ export default class PokemonCard extends HTMLElement{
         const card = document.createElement("div")
         card.classList.add("card")
         card.setAttribute("id", `${this.getId}`);
-        card.addEventListener("click", (e) => {chooseCard(e)})
 
         const pokeSprite = document.createElement("img")
         pokeSprite.src = this.getSprite
@@ -158,11 +166,12 @@ export default class PokemonCard extends HTMLElement{
         const pokeTypes = document.createElement("div")
         pokeTypes.classList.add("typesBox")
         this.types.forEach(type => {
-            const pokeType = document.createElement("p")
-            pokeType.classList.add(type.type.name)
-            pokeType.innerHTML = `${type.type.name}`;
-            console.log(pokeType)
-            pokeTypes.appendChild(pokeType)
+            if(type){
+                const pokeType = document.createElement("p")
+                pokeType.classList.add(type.type.name)
+                pokeType.innerHTML = `${type.type.name}`
+                pokeTypes.appendChild(pokeType)
+            }
         });
         card.appendChild(pokeTypes)
 
